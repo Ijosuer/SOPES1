@@ -1,0 +1,17 @@
+services:
+  frontend:
+    build: ./server
+    command: sh -c "npm start"
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mysql
+
+  mysql:
+    build: ./db
+    restart: always
+    environment:
+     MYSQL_DATABASE: 'users'
+     MYSQL_ROOT_PASSWORD: 'josue'
+    ports:
+      - '7777:3306'

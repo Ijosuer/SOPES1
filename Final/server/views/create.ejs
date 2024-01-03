@@ -1,0 +1,48 @@
+<!-- views/create.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Create User</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Create User</h2>
+        <form method="post" action="/create" onsubmit="handleCreate()">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Create</button>
+        </form>
+
+        <script>
+            function handleCreate() {
+              const credentials = {
+                    username: document.getElementsByName('username')[0].value,
+                    password: document.getElementsByName('password')[0].value
+                };
+                fetch('/create', {
+                    method: 'POST',
+                    body: JSON.stringify(credentials),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                    } else {
+                        alert(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred during creation.');
+                });
+            }
+        </script>
+    </div>
+</body>
+</html>

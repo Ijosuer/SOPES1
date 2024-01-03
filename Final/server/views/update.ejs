@@ -1,0 +1,62 @@
+<!-- views/update.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Update User Password</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Update User Password</h2>
+        <form method="post" onsubmit="handleUpdate()">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="oldPassword" placeholder="Old Password" required>
+            <input type="password" name="newPassword" placeholder="New Password" required>
+            <button type="button" onclick="confirmUpdate()">Confirm Update</button>
+        </form>
+
+        <script>
+            function confirmUpdate() {
+                var username = document.getElementsByName("username")[0].value;
+                var oldPassword = document.getElementsByName("oldPassword")[0].value;
+                var newPassword = document.getElementsByName("newPassword")[0].value;
+
+                if (username && oldPassword && newPassword) {
+                    if (confirm("Are you sure you want to update the password?")) {
+                        handleUpdate();
+                    }
+                } else {
+                    alert("Please fill in all the fields.");
+                }
+            }
+
+            function handleUpdate() {
+                const credentials = {
+                    username: document.getElementsByName('username')[0].value,
+                    oldPassword: document.getElementsByName('oldPassword')[0].value,
+                    newPassword: document.getElementsByName('newPassword')[0].value
+                };
+                console.log(credentials)
+                fetch('/update', {
+                    method: 'POST',
+                    body: JSON.stringify(credentials),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                    } else {
+                      console.log(data)
+                        alert("Error: Usuario no encontrado o la contraseña anterior es incorrecta.");
+                    }
+                })
+            }
+        </script>
+    </div>
+</body>
+</html>
